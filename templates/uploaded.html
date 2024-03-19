@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+<div id="response">
+	{% if files %}
+		<p>Files(s) uploaded.</p>
+	{% endif %}
+	{% if egd %}
+		<p>File(s) added to processing queue for image auto description.</p>
+	{% endif %}
+	<br />
+	<p>Return to <a href="/">Gallery Home</a> </p>
+</div>
+{% endblock %}

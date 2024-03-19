@@ -1,0 +1,9 @@
+opencv-python-headless
+flask
+scikit-learn
+
+# !OPTIONAL Enable autodesc in config
+# open_clip_torch
+# transformers
+# Flask-APScheduler
+

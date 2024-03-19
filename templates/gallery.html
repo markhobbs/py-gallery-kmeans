@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+	<form method="post">
+		<a href="/upload">Upload</a> |
+		<input type="text" name="search">
+		<input type="submit" value="Go">
+	</form>
+	{% if imgs | length != 0 %}
+        <div id="swatches">
+			<p>Search returned {{ imgs | length }} result(s)</p>
+            {% for img in imgs %}
+                <span class="swatch" style="background-color: rgb({{ img[4][0] }} {{ img[4][1] }} {{ img[4][2] }})">
+                &nbsp;</span><span class="swatch" style="background-color: rgb({{ img[4][3] }} {{ img[4][4] }} {{ img[4][5] }})">
+                &nbsp;</span><span class="swatch" style="background-color: rgb({{ img[4][6] }} {{ img[4][7] }} {{ img[4][8] }})">&nbsp;</span>
+            {% endfor %}
+        </div>
+	    <div class="gallery">
+		    {% for img in imgs %}
+		    <div class="gallery-item">
+                <label>
+                    <h2>{{ img[5] | truncate( 60 ) }}</h2>
+					<i>
+                        <br />
+                        {{ img[1] }} {{ img[2] }} upload {{img[6]}}
+                        <span data-uid="{{ img[0] }}">Delete</span>
+                    </i>
+				</label>
+				<img alt="
+                        {% if img[5] != '' %} 
+                            {{ img[5] }}
+                        {% else %} 
+                            {{ img[1] }} {{ img[2] }} 
+                        {% endif %}" 
+					src="static/gallery/{{ img[1] }}">
+			    {% if img[4] %}
+					<span class="swatch" style="background-color: rgb({{ img[4][0] }} {{ img[4][1] }} {{ img[4][2] }})">&nbsp;</span>
+                    <span class="swatch" style="background-color: rgb({{ img[4][3] }} {{ img[4][4] }} {{ img[4][5] }})">&nbsp;</span>
+                    <span class="swatch" style="background-color: rgb({{ img[4][6] }} {{ img[4][7] }} {{ img[4][8] }})">&nbsp;</span>
+			    {% endif %}
+		    </div>
+		    {% endfor %}
+	    </div>
+        <br />
+        <div id="swatches">
+            {% for img in imgs %}
+            <span class="swatch" style="background-color: rgb({{ img[4][0] }} {{ img[4][1] }} {{ img[4][2] }})">&nbsp;
+            </span><span class="swatch" style="background-color: rgb({{ img[4][3] }} {{ img[4][4] }} {{ img[4][5] }})">&nbsp;
+            </span><span class="swatch" style="background-color: rgb({{ img[4][6] }} {{ img[4][7] }} {{ img[4][8] }})">&nbsp;</span>
+            {% endfor %}
+        </div>
+	{% else %}
+	    <div id="response">No search results.</div>
+	{% endif %}
+{% endblock %}
+
+
