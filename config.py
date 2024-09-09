@@ -1,6 +1,7 @@
 # config.py
 '''
-    To use the auto description option enable the autodesc flag by setting its value to True,  some additional librarys are required see requirements.txt
+    To use the auto description option enable the autodesc flag by setting its value to True.
+    Some additional librarys are required see requirements.txt
 '''
 
 host_name = "localhost"

@@ -13,14 +13,18 @@ from werkzeug.utils import secure_filename
 
 if config.options['enable_autodesc']:
 	from PIL import Image
-	import open_clip
 	import torch
-	try: 
+	# if torch.cuda.is_available():
+	# print("GPU is available")
+	import open_clip
+	try:
 		model, _, transform = open_clip.create_model_and_transforms(model_name="coca_ViT-L-14", pretrained="mscoco_finetuned_laion2B-s13B-b90k")
 	except:
 		print("Clip, something went wrong when download")
 	finally:
 		print("Clip, downloaded models")
+	#else:
+	#	print("GPU is not available")
 
 def centroid_histogram(clt):
 	# grab the number of different clusters and create a histogram
@@ -68,11 +72,18 @@ def get_db():
     return conn
 
 def get_description(img):
-    im = Image.open(img).convert("RGB")
-    im = transform(im).unsqueeze(0)
-    with torch.no_grad(), torch.cuda.amp.autocast():
-      generated = model.generate(im)
-    return open_clip.decode(generated[0]).split("<end_of_text>")[0].replace("<start_of_text>", "")
+	if img:
+		# if torch.cuda.is_available():
+		im = Image.open(img).convert("RGB")
+		im = transform(im).unsqueeze(0)
+		with torch.no_grad(), torch.cuda.amp.autocast():
+			generated = model.generate(im)
+		return open_clip.decode(generated[0]).split("<end_of_text>")[0].replace("<start_of_text>", "")
+		# else:
+		#	print("GPU is not available")
+		#	return img
+	else:
+		return "Image Required"
 
 def get_files(search):
     db = get_db()
@@ -95,17 +106,17 @@ def get_files_json():
     return [results]
 
 def job_desc_empty(text):
-    db = get_db()
-    cursor = db.cursor()
-    statement = "SELECT `uid`, `filename` FROM `images` WHERE `description` = ? ORDER BY Timestamp DESC Limit ?"
-    cursor.execute(statement, ["pending", config.options['job_limit']])
-    results = cursor.fetchall()
-    for result in results:
-        description = get_description(config.filepaths['gallery'] + result[1])
-        statement = "UPDATE `images` SET `description` = ? WHERE uid = ?"
-        cursor.execute(statement, [description, result[0]])
-    db.commit()
-    db.close()
+	db = get_db()
+	cursor = db.cursor()
+	statement = "SELECT `uid`, `filename` FROM `images` WHERE `description` = ? ORDER BY Timestamp DESC Limit ?"
+	cursor.execute(statement, ["pending", config.options['job_limit']])
+	results = cursor.fetchall()
+	for result in results:
+		description = get_description(config.filepaths['gallery'] + result[1])
+		statement = "UPDATE `images` SET `description` = ? WHERE uid = ?"
+		cursor.execute(statement, [description, result[0]])
+	db.commit()
+	db.close()
 
 def flatten(iterable, flattened):
 	try:

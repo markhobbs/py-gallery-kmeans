@@ -16,7 +16,7 @@ python3 ./init.py
 python3 ./run.py
 
 # Import Bulk Images
-cd ./static/input
+cd ./static/demo
 (Add your images)
 
 Then run...http://localhost:5000/demo 
@@ -28,9 +28,7 @@ cd react && yarn install && yarn start
 
 export NODE_OPTIONS=--openssl-legacy-provider
 
-# Automatic Descriptions  
-Enable feature flag within run.py 
-(* Additional dependencies may be required for performance and specific to your ecosystem, ie CUDA for NVIDIA GPU)
+# Automatic Descriptions 
+Background Scheduled Image Description generated on upload 
 
-
-
+(* Enable feature flag within config.js. !CUDA Enabled GPU Required. Additional dependencies may be required for performance and specific to your ecosystem )

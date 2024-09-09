@@ -1,9 +1,11 @@
-opencv-python-headless
-flask
-scikit-learn
 
-# !OPTIONAL Enable autodesc in config
-# open_clip_torch
-# transformers
-# Flask-APScheduler
+flask==3.0.3
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+scikit-learn==1.5.1
 
+#! OPTIONAL Enable autodesc in config
+#! 
+#! open_clip_torch==2.26.1
+#! transformers==4.44.2
+#! Flask-APScheduler==1.13.1
